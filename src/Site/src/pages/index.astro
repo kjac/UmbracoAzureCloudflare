@@ -1,0 +1,129 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import aboutImage from '../images/pexels-afta-putta-gunawan-683039.jpg'
+import menuImage from '../images/pexels-quang-nguyen-vinh-2159106.jpg'
+import whereImage from '../images/pexels-clem-onojeghuo-175733.jpg'
+
+const response = await fetch(`${import.meta.env.UMBRACO_SERVER_URL}/umbraco/delivery/api/v2/content/item/home`);
+const data = await response.json();
+const foodItems = data.properties.food.items.map(item => item.content.properties);
+const drinkItems = data.properties.drink.items.map(item => item.content.properties);
+---
+
+<Layout title="THE CAFE">
+	<main>
+		<div class="w3-top">
+			<div class="w3-row w3-padding w3-black">
+				<div class="w3-col s3">
+					<a href="#" class="w3-button w3-block w3-black">HOME</a>
+				</div>
+				<div class="w3-col s3">
+					<a href="#about" class="w3-button w3-block w3-black">ABOUT</a>
+				</div>
+				<div class="w3-col s3">
+					<a href="#menu" class="w3-button w3-block w3-black">MENU</a>
+				</div>
+				<div class="w3-col s3">
+					<a href="#where" class="w3-button w3-block w3-black">WHERE</a>
+				</div>
+			</div>
+		</div>
+
+		<header class="bgimg w3-display-container w3-grayscale-min" id="home">
+			<div class="w3-display-bottomleft w3-center w3-padding-large w3-hide-small">
+				<span class="w3-tag">{data.properties.whereOpeningHours}</span>
+			</div>
+			<div class="w3-display-middle w3-center">
+				<span class="w3-tag" style="font-size: 90px">THE CAFE</span>
+			</div>
+			<div class="w3-display-bottomright w3-center w3-padding-large">
+				<span class="w3-tag">{data.properties.whereAddress}</span>
+			</div>
+		</header>
+
+		<div class="w3-sand w3-grayscale w3-large">
+			<div class="w3-container" id="about">
+				<div class="w3-content">
+					<h3 class="w3-center w3-padding-64"><span class="w3-tag w3-wide">ABOUT THE CAFE</span></h3>
+					<p style="white-space: pre-wrap">{data.properties.aboutText}</p>
+					{
+						data.properties.aboutQuote && data.properties.aboutQuoteSource &&
+						<div class="w3-panel w3-leftbar w3-light-grey">
+							<p><i>"{data.properties.aboutQuote}"</i></p>
+							<p>{data.properties.aboutQuoteSource}</p>
+						</div>
+					}
+
+					<Image src={aboutImage} alt="THE CAFE interior."/>
+				</div>
+			</div>
+
+			<div class="w3-container" id="menu">
+				<div class="w3-content">
+
+					<h3 class="w3-center w3-padding-48"><span class="w3-tag w3-wide">THE MENU</span></h3>
+
+					<div class="w3-container w3-padding-24 w3-card">
+						<h4 class="w3-center w3-dark-gray w3-margin-bottom">Eat</h4>
+						{
+							foodItems.map((item) => (
+								<h5>{item.name}</h5>
+								<p class="w3-text-dark-grey">{item.description} {item.price.toFixed(2)}</p><br/>
+							))
+						}
+					</div>
+
+					<div class="w3-container w3-padding-24 w3-margin-top w3-margin-bottom w3-card">
+						<h4 class="w3-center w3-dark-gray w3-margin-bottom">Drink</h4>
+						{
+							drinkItems.map((item) => (
+								<h5>{item.name}</h5>
+								<p class="w3-text-dark-grey">{item.description} {item.price.toFixed(2)}</p><br/>
+							))
+						}
+					</div>
+
+					<Image src={menuImage} alt="Coffee brewing pots in a line."/>
+				</div>
+			</div>
+
+			<div class="w3-container" id="where">
+				<div class="w3-content">
+					<h3 class="w3-center w3-padding-48"><span class="w3-tag w3-wide">WHERE TO FIND US</span>
+					</h3>
+					<p><strong>Find us at:</strong> {data.properties.whereAddress}</p>
+					<p><strong>Call us at:</strong> {data.properties.wherePhone}</p>
+					<p><strong>Opening hours:</strong> {data.properties.whereOpeningHours}</p>
+					<Image src={whereImage} alt="Bicycle with a cafe sign."/>
+					<p><span class="w3-tag">FYI!</span> We offer full-service catering for any event, large or
+						small. We understand your needs and we will cater the food to satisfy the biggerst criteria of
+						them all, both look and taste.</p>
+				</div>
+			</div>
+		</div>
+
+	</main>
+</Layout>
+
+<style>
+	body, html {
+		font-family: "Inconsolata", sans-serif;
+	}
+
+	.bgimg {
+		background-position: center;
+		background-size: cover;
+		background-image: url("/images/pexels-lisa-fotios-1024359.webp");
+		height: 500px;
+	}
+
+	.w3-content {
+		max-width: 700px;
+	}
+
+	.w3-content img {
+		width: 100%;
+		height: auto;
+	}
+</style>
