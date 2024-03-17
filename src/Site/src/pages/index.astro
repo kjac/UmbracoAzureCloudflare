@@ -5,7 +5,18 @@ import aboutImage from '../images/pexels-afta-putta-gunawan-683039.jpg'
 import menuImage from '../images/pexels-quang-nguyen-vinh-2159106.jpg'
 import whereImage from '../images/pexels-clem-onojeghuo-175733.jpg'
 
-const response = await fetch(`${import.meta.env.UMBRACO_SERVER_URL}/umbraco/delivery/api/v2/content/item/home`);
+const apiKey = import.meta.env.UMBRACO_API_KEY;
+const ssr = import.meta.env.USE_SSR;
+
+const response = await fetch(
+	`${import.meta.env.UMBRACO_SERVER_URL}/umbraco/delivery/api/v2/content/item/home`,
+	{
+		headers: {
+			'Api-Key': apiKey,
+			'Preview': ssr ? 'true' : 'false',
+		}
+	}
+);
 const data = await response.json();
 const foodItems = data.properties.food.items.map(item => item.content.properties);
 const drinkItems = data.properties.drink.items.map(item => item.content.properties);
