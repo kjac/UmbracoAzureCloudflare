@@ -2,7 +2,7 @@
 
 Demo of using hosting an Umbraco Delivery API in Azure and consuming it in Cloudflare Pages
 
-Read all about it on [my blog](https://kjac.dev/posts/jamstack-for-free-with-azure-and-cloudflare).
+Read all about it on [my blog](https://kjac.dev/posts/jamstack-for-free-with-azure-and-cloudflare/).
 
 ## Running the demo
 
