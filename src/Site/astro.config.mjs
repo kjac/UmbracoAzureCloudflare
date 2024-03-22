@@ -1,4 +1,4 @@
-import { defineConfig, passthroughImageService } from 'astro/config';
+import { defineConfig } from 'astro/config';
 import { loadEnv } from "vite";
 import cloudflare from "@astrojs/cloudflare";
 
@@ -11,12 +11,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = NODE_TLS_REJECT_UNAUTHORIZED;
 const config = USE_SSR
   ? {
       output: 'server',
-      adapter: cloudflare({
-          imageService: 'passthrough'
-      }),
-      image: {
-        service: passthroughImageService()
-      }
+      adapter: cloudflare()
     }
   : {
     output: 'static'
