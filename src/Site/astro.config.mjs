@@ -1,4 +1,4 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig, passthroughImageService } from 'astro/config';
 import { loadEnv } from "vite";
 import cloudflare from "@astrojs/cloudflare";
 
@@ -12,8 +12,11 @@ const config = USE_SSR
   ? {
       output: 'server',
       adapter: cloudflare({
-          imageService: 'cloudflare'
-      })
+          imageService: 'passthrough'
+      }),
+      image: {
+        service: passthroughImageService()
+      }
     }
   : {
     output: 'static'
